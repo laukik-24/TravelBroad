@@ -3,7 +3,6 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
-
 module.exports.index = async (req , res) => {
     const allListings = await Listing.find({});
     res.render("listings/index.ejs" , { allListings });
@@ -18,7 +17,7 @@ module.exports.showlisting = async (req , res) => {
     let {id} = req.params;
     const listing = await Listing.findById(id).populate({path : "reviews", populate : {path : "author"},}).populate("owner");
     if(!listing) {
-        req.flash("error" , "Listing does not exist"); 
+        req.flash("error" , "Listing does not exist");
         res.redirect("/listings");
     }
     res.render("listings/show.ejs" , { listing });
@@ -42,7 +41,7 @@ module.exports.createListing = async (req , res , next) => {
 
     let savedListing = await newListing.save();
     console.log(savedListing);
-    
+
     req.flash("success" , "New listing created");
     res.redirect("/listings");
 };
@@ -52,7 +51,7 @@ module.exports.renderEditForm = async (req, res) =>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
     if(!listing) {
-        req.flash("error" , "Listing does not exist"); 
+        req.flash("error" , "Listing does not exist");
         res.redirect("/listings");
     }
 
@@ -74,7 +73,7 @@ module.exports.updateListing = async (req , res) => {
     await listing.save();
     }
 
-    req.flash("success" , "Listing Updated"); 
+    req.flash("success" , "Listing Updated");
     res.redirect(`/listings/${id}`);
 };
 
